@@ -420,7 +420,7 @@ This specification introduces the role of "Presenter" as shown in {{fig-presente
 Evidence. Since HSMs are generally servers (client/server relationship) or peripherals (controller/peripheral relationship), a Presenter is
 required to launch the process of creating the Evidence and capturing it to forward it to the Verifier.
 
-~~~ aasvg
+~~~
 +-----------------------------+
 |  Attester (HSM)             |
 |                             |
