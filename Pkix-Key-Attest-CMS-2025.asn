@@ -1,0 +1,324 @@
+PKIX-Evidence-CMS-2025
+      { iso(1) identified-organization(3) dod(6) internet(1)
+        security(5) mechanisms(5) pkix(7) id-mod(0)
+        id-mod-pkix-evidence-cms-2025(TBDMOD1) }
+
+DEFINITIONS EXPLICIT TAGS ::=
+BEGIN
+
+EXPORTS ALL ;
+
+IMPORTS
+  ContentInfo, CONTENT-TYPE
+    FROM CryptographicMessageSyntax-2009 -- in [RFC5911]
+  { iso(1) member-body(2) us(840) rsadsi(113549)
+    pkcs(1) pkcs-9(9) smime(16) modules(0)
+    id-mod-cms-2004-02(41) }
+;
+
+-- OID Arc
+
+id-kp OBJECT IDENTIFIER ::=
+  { iso(1) identified-organization(3) dod(6) internet(1)
+    security(5) mechanisms(5) pkix(7) kp(3) }
+
+  -- Attestation Key Extended Key Usage --
+
+id-kp-attestationKey OBJECT IDENTIFIER ::= { id-kp TBDMOD2 }
+
+-- Evidence --
+
+-- The alias reuses CMS syntax. The profile restrictions in the
+-- specification, including id-signedData and nonempty signerInfos,
+-- must also be enforced; they are not expressed by this alias.
+Evidence ::= ContentInfo
+
+ct-keyAttestationEvidence CONTENT-TYPE ::= {
+    TbsEvidence IDENTIFIED BY id-ct-keyAttestationEvidence
+}
+
+TbsEvidence ::= SEQUENCE {
+    version INTEGER,
+    reportedElements SEQUENCE SIZE (1..MAX) OF ReportedElement
+}
+
+ReportedElement ::= SEQUENCE {
+    elementType         OBJECT IDENTIFIER,
+    claims             SEQUENCE SIZE (1..MAX) OF ReportedClaim
+}
+
+CLAIM ::= CLASS {
+    &id       OBJECT IDENTIFIER UNIQUE,
+    &Type
+} WITH SYNTAX {
+    ID &id
+    WITH TYPE &Type
+}
+
+ReportedClaim ::= SEQUENCE {
+    claimType  CLAIM.&id ({ClaimSet}),
+    value      CLAIM.&Type ({ClaimSet}{@claimType})
+}
+
+ClaimSet CLAIM ::= {
+      claim-transaction-nonce
+      | claim-transaction-timestamp
+      | claim-transaction-ak-spki
+      | claim-platform-vendor
+      | claim-platform-oemid
+      | claim-platform-hwmodel
+      | claim-platform-hwversion
+      | claim-platform-hwserial
+      | claim-platform-swname
+      | claim-platform-swversion
+      | claim-platform-debugstat
+      | claim-platform-uptime
+      | claim-platform-bootcount
+      | claim-platform-fipsboot
+      | claim-platform-fipsver
+      | claim-platform-fipslevel
+      | claim-platform-fipsmodule
+      | claim-key-identifier
+      | claim-key-spki
+      | claim-key-extractable
+      | claim-key-sensitive
+      | claim-key-never-extractable
+      | claim-key-local
+      | claim-key-expiry
+      | claim-key-purpose,
+      ...
+}
+
+id-evidence OBJECT IDENTIFIER ::= { 
+     iso(1) identified-organization(3) dod(6)
+     internet(1) security(5) mechanisms(5) TBDMOD3 }
+
+id-evidence-contentType OBJECT IDENTIFIER ::= { id-evidence 3 }
+id-ct-keyAttestationEvidence OBJECT IDENTIFIER ::=
+    { id-evidence-contentType 0 }
+
+id-evidence-element             OBJECT IDENTIFIER ::=
+    { id-evidence 0 }
+id-evidence-element-transaction OBJECT IDENTIFIER ::=
+    { id-evidence-element 0 }
+id-evidence-element-platform    OBJECT IDENTIFIER ::=
+    { id-evidence-element 1 }
+id-evidence-element-key         OBJECT IDENTIFIER ::=
+    { id-evidence-element 2 }
+
+id-evidence-claim    OBJECT IDENTIFIER ::=
+    { id-evidence 1 }
+
+id-evidence-claim-transaction           OBJECT IDENTIFIER ::=
+    { id-evidence-claim 0 }
+id-evidence-claim-transaction-nonce     OBJECT IDENTIFIER ::=
+    { id-evidence-claim-transaction 0 }
+id-evidence-claim-transaction-timestamp OBJECT IDENTIFIER ::=
+    { id-evidence-claim-transaction 1 }
+id-evidence-claim-transaction-ak-spki   OBJECT IDENTIFIER ::=
+    { id-evidence-claim-transaction 2 }
+
+id-evidence-claim-platform            OBJECT IDENTIFIER ::=
+    { id-evidence-claim 1 }
+id-evidence-claim-platform-vendor     OBJECT IDENTIFIER ::=
+    { id-evidence-claim-platform 0 }
+id-evidence-claim-platform-oemid      OBJECT IDENTIFIER ::=
+    { id-evidence-claim-platform 1 }
+id-evidence-claim-platform-hwmodel    OBJECT IDENTIFIER ::=
+    { id-evidence-claim-platform 2 }
+id-evidence-claim-platform-hwversion  OBJECT IDENTIFIER ::=
+    { id-evidence-claim-platform 3 }
+id-evidence-claim-platform-hwserial   OBJECT IDENTIFIER ::=
+    { id-evidence-claim-platform 4 }
+id-evidence-claim-platform-swname     OBJECT IDENTIFIER ::=
+    { id-evidence-claim-platform 5 }
+id-evidence-claim-platform-swversion  OBJECT IDENTIFIER ::=
+    { id-evidence-claim-platform 6 }
+id-evidence-claim-platform-debugstat  OBJECT IDENTIFIER ::=
+    { id-evidence-claim-platform 7 }
+id-evidence-claim-platform-uptime     OBJECT IDENTIFIER ::=
+    { id-evidence-claim-platform 8 }
+id-evidence-claim-platform-bootcount  OBJECT IDENTIFIER ::=
+    { id-evidence-claim-platform 9 }
+id-evidence-claim-platform-fipsboot   OBJECT IDENTIFIER ::=
+    { id-evidence-claim-platform 10 }
+id-evidence-claim-platform-fipsver    OBJECT IDENTIFIER ::=
+    { id-evidence-claim-platform 11 }
+id-evidence-claim-platform-fipslevel  OBJECT IDENTIFIER ::=
+    { id-evidence-claim-platform 12 }
+id-evidence-claim-platform-fipsmodule OBJECT IDENTIFIER ::=
+    { id-evidence-claim-platform 13 }
+
+id-evidence-claim-key                   OBJECT IDENTIFIER ::=
+    { id-evidence-claim 2 }
+id-evidence-claim-key-identifier        OBJECT IDENTIFIER ::=
+    { id-evidence-claim-key 0 }
+id-evidence-claim-key-spki              OBJECT IDENTIFIER ::=
+    { id-evidence-claim-key 1 }
+id-evidence-claim-key-extractable       OBJECT IDENTIFIER ::=
+    { id-evidence-claim-key 2 }
+id-evidence-claim-key-sensitive         OBJECT IDENTIFIER ::=
+    { id-evidence-claim-key 3 }
+id-evidence-claim-key-never-extractable OBJECT IDENTIFIER ::=
+    { id-evidence-claim-key 4 }
+id-evidence-claim-key-local             OBJECT IDENTIFIER ::=
+    { id-evidence-claim-key 5 }
+id-evidence-claim-key-expiry            OBJECT IDENTIFIER ::=
+    { id-evidence-claim-key 6 }
+id-evidence-claim-key-purpose           OBJECT IDENTIFIER ::=
+    { id-evidence-claim-key 7 }
+
+id-evidence-key-capability              OBJECT IDENTIFIER ::=
+    { id-evidence 2 }
+id-evidence-key-capability-encrypt      OBJECT IDENTIFIER ::=
+    { id-evidence-key-capability 0 }
+id-evidence-key-capability-decrypt      OBJECT IDENTIFIER ::=
+    { id-evidence-key-capability 1 }
+id-evidence-key-capability-wrap         OBJECT IDENTIFIER ::=
+    { id-evidence-key-capability 2 }
+id-evidence-key-capability-unwrap       OBJECT IDENTIFIER ::=
+    { id-evidence-key-capability 3 }
+id-evidence-key-capability-sign         OBJECT IDENTIFIER ::=
+    { id-evidence-key-capability 4 }
+id-evidence-key-capability-sign-recover OBJECT IDENTIFIER ::=
+    { id-evidence-key-capability 5 }
+id-evidence-key-capability-verify       OBJECT IDENTIFIER ::=
+    { id-evidence-key-capability 6 }
+id-evidence-key-capability-verify-recover OBJECT IDENTIFIER ::=
+    { id-evidence-key-capability 7 }
+id-evidence-key-capability-derive       OBJECT IDENTIFIER ::=
+    { id-evidence-key-capability 8 }
+id-evidence-key-capability-decapsulate  OBJECT IDENTIFIER ::=
+    { id-evidence-key-capability 9 }
+id-evidence-key-capability-encapsulate  OBJECT IDENTIFIER ::=
+    { id-evidence-key-capability 10 }
+
+
+claim-transaction-nonce CLAIM ::= {
+  ID id-evidence-claim-transaction-nonce
+  WITH TYPE OCTET STRING
+}
+
+claim-transaction-timestamp CLAIM ::= {
+  ID id-evidence-claim-transaction-timestamp
+  WITH TYPE GeneralizedTime
+}
+
+claim-transaction-ak-spki CLAIM ::= {
+  ID id-evidence-claim-transaction-ak-spki
+  WITH TYPE OCTET STRING
+}
+
+claim-platform-vendor CLAIM ::= {
+  ID id-evidence-claim-platform-vendor
+  WITH TYPE UTF8String
+}
+
+claim-platform-oemid CLAIM ::= {
+  ID id-evidence-claim-platform-oemid
+  WITH TYPE OCTET STRING
+}
+
+claim-platform-hwmodel CLAIM ::= {
+  ID id-evidence-claim-platform-hwmodel
+  WITH TYPE OCTET STRING
+}
+
+claim-platform-hwversion CLAIM ::= {
+  ID id-evidence-claim-platform-hwversion
+  WITH TYPE UTF8String
+}
+
+claim-platform-hwserial CLAIM ::= {
+  ID id-evidence-claim-platform-hwserial
+  WITH TYPE UTF8String
+}
+
+claim-platform-swname CLAIM ::= {
+  ID id-evidence-claim-platform-swname
+  WITH TYPE UTF8String
+}
+
+claim-platform-swversion CLAIM ::= {
+  ID id-evidence-claim-platform-swversion
+  WITH TYPE UTF8String
+}
+
+claim-platform-debugstat CLAIM ::= {
+  ID id-evidence-claim-platform-debugstat
+  WITH TYPE INTEGER
+}
+
+claim-platform-uptime CLAIM ::= {
+  ID id-evidence-claim-platform-uptime
+  WITH TYPE INTEGER
+}
+
+claim-platform-bootcount CLAIM ::= {
+  ID id-evidence-claim-platform-bootcount
+  WITH TYPE INTEGER
+}
+
+claim-platform-fipsboot CLAIM ::= {
+  ID id-evidence-claim-platform-fipsboot
+  WITH TYPE BOOLEAN
+}
+
+claim-platform-fipsver CLAIM ::= {
+  ID id-evidence-claim-platform-fipsver
+  WITH TYPE UTF8String
+}
+
+claim-platform-fipslevel CLAIM ::= {
+  ID id-evidence-claim-platform-fipslevel
+  WITH TYPE INTEGER
+}
+
+claim-platform-fipsmodule CLAIM ::= {
+  ID id-evidence-claim-platform-fipsmodule
+  WITH TYPE UTF8String
+}
+
+claim-key-identifier CLAIM ::= {
+  ID id-evidence-claim-key-identifier
+  WITH TYPE UTF8String
+}
+
+claim-key-spki CLAIM ::= {
+  ID id-evidence-claim-key-spki
+  WITH TYPE OCTET STRING
+}
+
+claim-key-extractable CLAIM ::= {
+  ID id-evidence-claim-key-extractable
+  WITH TYPE BOOLEAN
+}
+
+claim-key-sensitive CLAIM ::= {
+  ID id-evidence-claim-key-sensitive
+  WITH TYPE BOOLEAN
+}
+
+claim-key-never-extractable CLAIM ::= {
+  ID id-evidence-claim-key-never-extractable
+  WITH TYPE BOOLEAN
+}
+
+claim-key-local CLAIM ::= {
+  ID id-evidence-claim-key-local
+  WITH TYPE BOOLEAN
+}
+
+claim-key-expiry CLAIM ::= {
+  ID id-evidence-claim-key-expiry
+  WITH TYPE GeneralizedTime
+}
+
+claim-key-purpose CLAIM ::= {
+  ID id-evidence-claim-key-purpose
+  WITH TYPE KeyPurposes
+}
+
+KeyPurposes ::= SEQUENCE OF OBJECT IDENTIFIER
+
+END
