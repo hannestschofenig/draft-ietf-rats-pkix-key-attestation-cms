@@ -9,7 +9,7 @@ submissiontype: IETF
 
 ipr: trust200902
 area: "Security"
-workgroup: "RATS"
+workgroup: "Remote ATtestation ProcedureS"
 keyword:
   - Internet-Draft
   - RATS
@@ -31,11 +31,11 @@ pi:
   docmapping: yes
   toc_levels: 4
 venue:
-  group: RATS
-  type: Working Group
-  mail: rats@ietf.org
-  arch: https://datatracker.ietf.org/wg/rats/about/
-  github: "ietf-rats-wg/key-attestation"
+  group: "Remote ATtestation ProcedureS"
+  type: "Working Group"
+  mail: "rats@ietf.org"
+  arch: "https://mailarchive.ietf.org/arch/browse/rats/"
+  github: "hannestschofenig/draft-ietf-rats-pkix-key-attestation-cms"
 
 author:
   - name: Jean-Pierre Fiset
