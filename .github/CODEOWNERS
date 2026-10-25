@@ -1,0 +1,3 @@
+# Automatically generated CODEOWNERS
+# Regenerate with `make update-codeowners`
+draft-ietf-rats-pkix-key-attestation-cms.md jp@crypto4a.com mike@ounsworth.ca hannes.tschofenig@gmx.net henk.birkholz@ietf.contact monty.wiseman@oracle.com ned.smith.ietf@gmail.com
